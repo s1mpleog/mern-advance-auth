@@ -18,6 +18,7 @@ import {
   sendToken,
 } from "../utils/jwt";
 import { redis } from "../config/redis";
+import { getUserById } from "../services/user.service";
 
 // register user
 export const registrationUser = CatchAsyncError(
@@ -212,6 +213,19 @@ export const updateAccessToken = CatchAsyncError(
         status: "success",
         accessToken,
       });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// get user info
+export const getUserInfo = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?._id;
+
+      getUserById(userId, res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }

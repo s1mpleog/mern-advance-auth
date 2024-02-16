@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   activateUser,
+  getUserInfo,
   loginUser,
   logoutUser,
   registrationUser,
@@ -24,5 +25,6 @@ router
   .get(isAuthenticated, authorizeRoles("admin"), logoutUser);
 
 router.route("/refresh").get(updateAccessToken);
+router.route("/me").get(isAuthenticated, getUserInfo);
 
 export default router;
