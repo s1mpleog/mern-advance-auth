@@ -5,7 +5,10 @@ import {
   logoutUser,
   registrationUser,
 } from "../controllers/user.controller";
-import { isAuthenticated } from "../middlewares/auth.middleware";
+import {
+  authorizeRoles,
+  isAuthenticated,
+} from "../middlewares/auth.middleware";
 
 const router = Router();
 
@@ -15,6 +18,8 @@ router.route("/activate-user").post(activateUser);
 
 router.route("/login").post(loginUser);
 
-router.route("/logout").get(isAuthenticated, logoutUser);
+router
+  .route("/logout")
+  .get(isAuthenticated, authorizeRoles("admin"), logoutUser);
 
 export default router;
